@@ -1,6 +1,7 @@
 // MOS HARRO ME IMPORTU CANVASIN
 
 export default {
+    
     player: {
         x: 100,
         y: 100,

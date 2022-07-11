@@ -65,23 +65,24 @@ export default function Board() {
         };
     }, []);
 
+    let printItOncekthx = false
+
     useEffect(() => {
         const render = () => {
             const canvas = canvasRef.current
 
-            // let dpr = window.devicePixelRatio || 1;
-            // let rect = canvas.getBoundingClientRect()
+            let dpr = window.devicePixelRatio || 1;
+            let rect = canvas.getBoundingClientRect()
 
-            // canvas.width = rect.width * dpr
-            // canvas.height = rect.height * dpr
+            canvas.width = rect.width * dpr
+            canvas.height = rect.height * dpr
 
-            canvas.width = window.innerWidth * 2
-            canvas.height = window.innerHeight * 2
-            canvas.style.width = `${window.innerWidth}px`
-            canvas.style.height = `${window.innerHeight}px`
+            if (!printItOncekthx){
+                printItOncekthx = true
+                console.log("albeit, a little funky " + canvas.width + " " +canvas.height)
+            }
 
             const c = canvas.getContext('2d')
-            c.scale(2,2)
 
             c.clearRect(0, 0, canvas.width, canvas.height)
 

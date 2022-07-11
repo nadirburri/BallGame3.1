@@ -10,12 +10,19 @@ let velocity = vector.create(0, 0)
 
 let gravity = vector.create(0, grav)
 
+let printItOncekthx
+
 export function PlayerPhysics(canvas, c, player, mouse) { // LOGJIKA E LËVIZJEVE TË TOPIT
-    let height = canvas.height / 2
-    let width = canvas.width / 2
+    let height = canvas.height
+    let width = canvas.width
 
     dx = player.dx
     dy = player.dy
+
+    if (!printItOncekthx){
+        printItOncekthx = true
+        console.log("maybe, too funky " + player.x + " " + player.y)
+    }
 
     let accel = vector.create(dx, dy)
 
