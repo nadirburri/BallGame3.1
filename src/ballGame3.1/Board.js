@@ -72,8 +72,8 @@ export default function Board() {
             let dpr = window.devicePixelRatio || 1;
             let rect = canvas.getBoundingClientRect()
 
-            canvas.width = rect.width * dpr
-            canvas.height = rect.height * dpr
+            canvas.width = Math.round (dpr * rect.right) - Math.round (dpr * rect.left);
+            canvas.height = Math.round (dpr * rect.bottom) - Math.round (dpr * rect.top)
 
             const c = canvas.getContext('2d')
             c.scale(dpr,dpr)
