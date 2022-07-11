@@ -69,14 +69,19 @@ export default function Board() {
         const render = () => {
             const canvas = canvasRef.current
 
-            let dpr = window.devicePixelRatio || 1;
-            let rect = canvas.getBoundingClientRect()
+            // let dpr = window.devicePixelRatio || 1;
+            // let rect = canvas.getBoundingClientRect()
 
-            canvas.width = Math.round (dpr * rect.right) - Math.round (dpr * rect.left);
-            canvas.height = Math.round (dpr * rect.bottom) - Math.round (dpr * rect.top)
+            // canvas.width = rect.width * dpr
+            // canvas.height = rect.height * dpr
+
+            canvas.width = window.innerWidth * 2
+            canvas.height = window.innerHeight * 2
+            canvas.style.width = `${window.innerWidth}px`
+            canvas.style.height = `${window.innerHeight}px`
 
             const c = canvas.getContext('2d')
-            c.scale(dpr,dpr)
+            c.scale(2,2)
 
             c.clearRect(0, 0, canvas.width, canvas.height)
 

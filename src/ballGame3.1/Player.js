@@ -11,8 +11,8 @@ let velocity = vector.create(0, 0)
 let gravity = vector.create(0, grav)
 
 export function PlayerPhysics(canvas, c, player, mouse) { // LOGJIKA E LËVIZJEVE TË TOPIT
-    let height = canvas.height
-    let width = canvas.width
+    let height = canvas.height / 2
+    let width = canvas.width / 2
 
     dx = player.dx
     dy = player.dy
