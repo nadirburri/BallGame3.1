@@ -16,8 +16,8 @@ export default {
         goingRight: false,
         goingLeft: false,
     },
-    acceleration: {
-        dx: 0,
-        dy: 0
+    circle: {
+        x: 750,
+        y: 600
     }
 }

@@ -66,9 +66,22 @@ export default function Board() {
     }, []);
 
     let printItOncekthx = false
+    let counter = 0
 
+    const FRAMES_PER_SECOND = 60
+    const FRAME_MIN_TIME = (1000/60) * (60 / FRAMES_PER_SECOND) - (1000/60) * 0.5;
+    let lastFrameTime = 0
     useEffect(() => {
-        const render = () => {
+        const render = (time) => {
+            if(time-lastFrameTime < FRAME_MIN_TIME){
+                requestAnimationFrame(render);
+                return
+            }
+            lastFrameTime = time
+            
+            counter++
+            console.log(counter)
+
             const canvas = canvasRef.current
 
             let dpr = window.devicePixelRatio || 1;
@@ -94,7 +107,7 @@ export default function Board() {
 
             requestAnimationFrame(render)
         }
-        render() // RIRENDEROHU MENIHER
+        render(lastFrameTime) // RIRENDEROHU MENIHER
     }, [])
 
     return (

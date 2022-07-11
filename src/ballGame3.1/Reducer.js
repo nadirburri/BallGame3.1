@@ -34,7 +34,7 @@ export const reducer = (state, action) => {
         } else{
             const newPlayer = state.player
             newPlayer.dx = 0
-            return {player: newPlayer}
+            return {...state}
         }
     }
 }
