@@ -1,37 +1,39 @@
 export const reducer = (state, action) => {
     if (action.type === "JUMP"){
-        if (!state.player.onGround){
-            // PËR TA PARANDALUAR KËRCIMIN NË AJËR
-            return {...state}
+        if (state.player.onGround && action.payload){
+            const newPlayer = state.player
+            newPlayer.dy = 30
+            return {player: newPlayer}
         } else {
             const newPlayer = state.player
-            newPlayer.dy = 17.5
+            newPlayer.dy = 0
             return {player: newPlayer}
         }
     }
-    if (action.type === "GO_RIGHT"){
+    if (action.type === "RIGHT"){
         if (action.payload) {
             const newPlayer = state.player
-            newPlayer.dx = newPlayer.dx + newPlayer.speedingUp
+            newPlayer.goingRight = true
+            newPlayer.dx = 1
             return {player: newPlayer}
-        } else{
+        } else if (!state.player.goingLeft){
             const newPlayer = state.player
-            if(newPlayer.dx > 0){
-                newPlayer.dx = newPlayer.dx - newPlayer.slowingDown
-            }
+            newPlayer.dx = 0
+            return {player: newPlayer}
+        } else {
+            const newPlayer = state.player
             return {player: newPlayer}
         }
     }
-    if (action.type === "GO_LEFT"){
+    if (action.type === "LEFT"){
         if (action.payload) {
             const newPlayer = state.player
-            newPlayer.dx = newPlayer.dx - newPlayer.speedingUp
+            newPlayer.goingLeft = true
+            newPlayer.dx = -1
             return {player: newPlayer}
         } else{
             const newPlayer = state.player
-            if(newPlayer.dx < 0){
-                newPlayer.dx = newPlayer.dx + newPlayer.slowingDown
-            }
+            newPlayer.dx = 0
             return {player: newPlayer}
         }
     }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useReducer } from "react";
 import { reducer } from "./Reducer";
 import { PlayerPhysics } from "./Player";
-import data from "../ballGame3.1/data"
+import data from "./functionsAndData/data"
 
 const defaultState = {
     player: {},
@@ -28,6 +28,7 @@ export default function Board() {
 
     let rightHeld = false
     let leftHeld = false
+    let upHeld = false
 
     function downHandler({ key }) {
         if (key === 'ArrowRight') {
@@ -37,7 +38,8 @@ export default function Board() {
             leftHeld = true
         }
         if (key === 'ArrowUp') {
-            dispatch({ type: "JUMP" })
+            upHeld = true
+            dispatch({ type: "JUMP", payload: upHeld })
         }
     }
 
@@ -47,6 +49,10 @@ export default function Board() {
         }
         if (key === 'ArrowLeft') {
             leftHeld = false
+        }
+        if (key === 'ArrowUp') {
+            upHeld = false
+            dispatch({ type: "JUMP", payload: upHeld })
         }
     }
 
@@ -62,14 +68,23 @@ export default function Board() {
     useEffect(() => {
         const render = () => {
             const canvas = canvasRef.current
+
+            let dpr = window.devicePixelRatio || 1;
+            let rect = canvas.getBoundingClientRect()
+
+            canvas.width = rect.width * dpr
+            canvas.height = rect.height * dpr
+
             const c = canvas.getContext('2d')
+            c.scale(dpr,dpr)
+
             c.clearRect(0, 0, canvas.width, canvas.height)
 
             let { player } = data
 
             PlayerPhysics(canvas, c, player, mouse)
-            dispatch({ type: "GO_RIGHT", payload: rightHeld })
-            dispatch({ type: "GO_LEFT", payload: leftHeld })
+            dispatch({ type: "LEFT", payload: leftHeld })
+            dispatch({ type: "RIGHT", payload: rightHeld })
 
             requestAnimationFrame(render)
         }
@@ -83,7 +98,6 @@ export default function Board() {
             height={window.innerHeight - 71.5} // -71.5 PËR SHKAK TË NAVBARIT
             width={window.innerWidth}
             onMouseMove={move}
-            // onClick={() => { dispatch({ type: "JUMP" }) }}
             onMouseEnter={() => setPause(false)}
             onMouseLeave={() => setPause(true)} />
     )

@@ -1,30 +1,12 @@
 import { useState, useEffect } from "react";
-
+import vector from "./ballGame3.1/functionsAndData/vector";
 const Home = () => {
 
-    const [shiftHeld, setShiftHeld] = useState(false);
-
-    function downHandler({ key }) {
-        if (key === 'Shift') {
-            setShiftHeld(true);
-            console.log("go crazy aaa")
-        }
-    }
-
-    function upHandler({ key }) {
-        if (key === 'Shift') {
-            setShiftHeld(false);
-            console.log("go stupid aaa")
-        }
-    }
-
     useEffect(() => {
-        window.addEventListener('keydown', downHandler);
-        window.addEventListener('keyup', upHandler);
-        return () => {
-            window.removeEventListener('keydown', downHandler);
-            window.removeEventListener('keyup', upHandler);
-        };
+        let v1 = vector.create(8, 6)
+        let v2 = v1.multiply(5)
+        console.log(v1.getLength())
+        console.log(v2.getLength())
     }, []);
 
     return (
