@@ -8,7 +8,7 @@ export default data = {
         if (level === 1){
             let p = Object.create(this);
 		    p.x = this.canvasXRatio(canvas, 50)
-		    p.y = this.canvasYRatio(canvas, 50)
+		    p.y = this.canvasYRatio(canvas, 98)
             p.grav = this.canvasYRatio(canvas, 0.058)
             p.speed = this.canvasXRatio(canvas, 0.045)
             p.jumpPower = this.canvasYRatio(canvas, 1.73)
@@ -59,7 +59,7 @@ export default data = {
             goingLeft: false,
             jumping: false,
             jumpCooldown: 5,
-            bounces: 0,
+            bounces: 6,
         })
     },
     // setPlayer: function({x, y, dx, dy, grav, speed, jumpPower, bounce, friction, radius, color, onGround, goingRight, goingLeft}) {

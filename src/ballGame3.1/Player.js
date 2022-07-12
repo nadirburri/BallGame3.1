@@ -36,7 +36,7 @@ export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEV
         velocity.setX(velocity.getX() + friction)
     }
 
-    if(player.onGround && velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight){
+    if(velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight){
         velocity.setX(0)
     }
 
