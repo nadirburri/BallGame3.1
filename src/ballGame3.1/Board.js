@@ -13,8 +13,6 @@ let mouse = {
 }
 
 export default function Board() {
-    const canvasRef = useRef(null)
-
     const [pause, setPause] = useState(false);
 
     const [state, dispatch] = useReducer(reducer, defaultState)
@@ -39,7 +37,6 @@ export default function Board() {
         }
         if (key === 'ArrowUp') {
             upHeld = true
-            dispatch({ type: "JUMP", payload: upHeld })
         }
     }
 
@@ -52,7 +49,6 @@ export default function Board() {
         }
         if (key === 'ArrowUp') {
             upHeld = false
-            dispatch({ type: "JUMP", payload: upHeld })
         }
     }
 
@@ -65,45 +61,40 @@ export default function Board() {
         };
     }, []);
 
-    let printItOncekthx = false
-    let counter = 0
+    const canvasRef = useRef(null)
+    const contextRef = useRef(null)
+    useEffect(() => {
+        const canvas = canvasRef.current
+        let dpr = window.devicePixelRatio || 1
+        let rect = canvas.getBoundingClientRect()
+        canvas.width = rect.width * dpr
+        canvas.height = rect.height * dpr
 
-    const FRAMES_PER_SECOND = 60
-    const FRAME_MIN_TIME = (1000/60) * (60 / FRAMES_PER_SECOND) - (1000/60) * 0.5;
+        const context = canvas.getContext('2d')
+        context.scale(dpr, dpr)
+        contextRef.current = context
+    }, [])
+
+    const fps = 60
+    const secondsPerFrame = (1000 / 60) * (60 / fps) - (1000 / 60) * 0.5;
     let lastFrameTime = 0
     useEffect(() => {
         const render = (time) => {
-            if(time-lastFrameTime < FRAME_MIN_TIME){
+            if (time - lastFrameTime < secondsPerFrame) {
                 requestAnimationFrame(render);
                 return
             }
             lastFrameTime = time
-            
-            counter++
-            console.log(counter)
 
             const canvas = canvasRef.current
-
-            let dpr = window.devicePixelRatio || 1;
-            let rect = canvas.getBoundingClientRect()
-
-            canvas.width = rect.width * dpr
-            canvas.height = rect.height * dpr
-
-            if (!printItOncekthx){
-                printItOncekthx = true
-                console.log("albeit, a little funky " + canvas.width + " " +canvas.height)
-            }
-
-            const c = canvas.getContext('2d')
-
-            c.clearRect(0, 0, canvas.width, canvas.height)
+            contextRef.current.clearRect(0, 0, canvas.width, canvas.height)
 
             let { player } = data
 
-            PlayerPhysics(canvas, c, player, mouse)
+            PlayerPhysics(canvas, contextRef.current, player, mouse)
             dispatch({ type: "LEFT", payload: leftHeld })
             dispatch({ type: "RIGHT", payload: rightHeld })
+            dispatch({ type: "JUMP", payload: upHeld })
 
             requestAnimationFrame(render)
         }
