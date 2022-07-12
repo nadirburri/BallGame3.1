@@ -108,7 +108,7 @@ export default function Board() {
             id="canvas"
             ref={canvasRef}
             width={window.innerWidth}
-            height={window.innerHeight - 71.5} // -71.5 PËR SHKAK TË NAVBARIT
+            height={window.innerHeight * 0.925} // * 0.925 PËR SHKAK TË NAVBARIT
             onMouseMove={move} />
     )
 }

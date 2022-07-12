@@ -8,7 +8,7 @@ let velocity = vector.create(0, 0)
 let currentLevel = 1
 
 export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
-    let { x, y, dx, dy, grav, bounce, friction, radius, color, borderColor, goingRight, goingLeft, bounces, jumpCooldown } = player
+    let { x, y, dx, dy, grav, bounce, friction, radius, color, borderColor, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
     let height = canvas.height
     let width = canvas.width
 
@@ -31,9 +31,17 @@ export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEV
     }
 
     if (velocity.getX() > 0){
-        velocity.setX(velocity.getX() - friction)
+        if(onGround){
+            velocity.setX(velocity.getX() - friction)
+        } else {
+            velocity.setX(velocity.getX() - friction*0.75)
+        }
     } else if (velocity.getX() < 0){
-        velocity.setX(velocity.getX() + friction)
+        if(onGround){
+            velocity.setX(velocity.getX() + friction)
+        } else {
+            velocity.setX(velocity.getX() + friction*0.75)
+        }
     }
 
     if(velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight){

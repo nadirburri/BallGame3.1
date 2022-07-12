@@ -1,15 +1,18 @@
-body{
+* {
   margin: 0;
   padding: 0;
+}
+
+body{
   box-sizing: border-box;
 }
 
 .navBar{
   padding: 0;
   margin: 0;
+  height: 7vh;
 }
 
 #canvas{
   background-color: rgba(253, 226, 189);
-  color: rgb(122, 0, 0)
 }
