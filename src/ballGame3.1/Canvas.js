@@ -13,10 +13,10 @@ let mouse = {
 }
 
 export default function Board() {
+    const [level, setLevel] = useState(1)
     const [pause, setPause] = useState(false);
 
     const [state, dispatch] = useReducer(reducer, defaultState)
-    state.player = data.player
 
     // MERRI KORDINATAT E KURSORIT
     const move = ({ nativeEvent }) => {
@@ -63,6 +63,7 @@ export default function Board() {
 
     const canvasRef = useRef(null)
     const contextRef = useRef(null)
+    let newCanvas
     useEffect(() => {
         const canvas = canvasRef.current
         let dpr = window.devicePixelRatio || 1
@@ -73,6 +74,9 @@ export default function Board() {
         const context = canvas.getContext('2d')
         context.scale(dpr, dpr)
         contextRef.current = context
+
+        newCanvas = data.create(canvas, level)
+        state.player = newCanvas.getPlayer()
     }, [])
 
     const fps = 60
@@ -89,9 +93,7 @@ export default function Board() {
             const canvas = canvasRef.current
             contextRef.current.clearRect(0, 0, canvas.width, canvas.height)
 
-            let { player } = data
-
-            PlayerPhysics(canvas, contextRef.current, player, mouse)
+            PlayerPhysics(canvas, contextRef.current, state.player, level)
             dispatch({ type: "LEFT", payload: leftHeld })
             dispatch({ type: "RIGHT", payload: rightHeld })
             dispatch({ type: "JUMP", payload: upHeld })
@@ -105,10 +107,8 @@ export default function Board() {
         <canvas
             id="canvas"
             ref={canvasRef}
-            height={window.innerHeight - 71.5} // -71.5 PËR SHKAK TË NAVBARIT
             width={window.innerWidth}
-            onMouseMove={move}
-            onMouseEnter={() => setPause(false)}
-            onMouseLeave={() => setPause(true)} />
+            height={window.innerHeight - 71.5} // -71.5 PËR SHKAK TË NAVBARIT
+            onMouseMove={move} />
     )
 }

@@ -1,27 +1,32 @@
 import vector from "./functionsAndData/vector"
 import data from "./functionsAndData/data"
 
-let { player } = data
-let { x, y, grav, bounce, friction, radius } = player
-
-let position = vector.create(x, y)
+let position = vector.create(0, 0)
 
 let velocity = vector.create(0, 0)
 
-let gravity = vector.create(0, grav)
+let currentLevel = 1
 
-export function PlayerPhysics(canvas, c, player, mouse) { // LOGJIKA E LËVIZJEVE TË TOPIT
+export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
+    let { x, y, dx, dy, grav, bounce, friction, radius, color, borderColor, goingRight, goingLeft, bounces, jumpCooldown } = player
     let height = canvas.height
     let width = canvas.width
 
-    let accel = vector.create(player.dx, player.dy)
+    if (currentLevel === level){
+        currentLevel++
+        position.setX(x)
+        position.setY(y)
+    }
+
+    let gravity = vector.create(0, grav)
+    let accel = vector.create(dx, dy)
 
     // LËVIZJA E TOPIT
     accel.addTo(gravity)
     velocity.addTo(accel)
     position.addTo(velocity)
 
-    if (!player.goingLeft && !player.goingRight){
+    if (!goingLeft && !goingRight){
         player.dx = 0
     }
 
@@ -31,7 +36,7 @@ export function PlayerPhysics(canvas, c, player, mouse) { // LOGJIKA E LËVIZJEV
         velocity.setX(velocity.getX() + friction)
     }
 
-    if(velocity.getX() < friction && velocity.getX() > -friction && !player.goingLeft && !player.goingRight){
+    if(player.onGround && velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight){
         velocity.setX(0)
     }
 
@@ -53,22 +58,32 @@ export function PlayerPhysics(canvas, c, player, mouse) { // LOGJIKA E LËVIZJEV
         velocity.setX(velocity.getX() * bounce)
     }
 
-    let data = new Ball(position.getX(), position.getY(), radius, 0, Math.PI * 2, false)
+    if (bounces > jumpCooldown){
+        player.color = "orange"
+        player.borderColor = "rgb(241, 141, 54)"
+    } else{
+        player.color = "rgb(122, 0, 0)"
+        player.borderColor = "rgb(75, 0, 0)"
+    }
+
+    let data = new Ball(position.getX(), position.getY(), radius, color, borderColor)
     data.draw(c)
 }
 
 // VIZATOJE TOPIN PAS ÇDO RIRENDERIMI
-function Ball(x, y, radius) {
+function Ball(x, y, radius, color, borderColor) {
     this.x = x
     this.y = y
     this.radius = radius
+    this.color = color
+    this.borderColor = borderColor
 
     this.draw = function (c) {
         c.beginPath();
         c.lineWidth = 2.5;
-        c.strokeStyle = 'rgba(241, 141, 54, 1)';
+        c.strokeStyle = borderColor;
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        c.fillStyle = 'orange';
+        c.fillStyle = this.color;
         c.fill();
         c.stroke();
         c.closePath();

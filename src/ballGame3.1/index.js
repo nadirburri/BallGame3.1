@@ -1,10 +1,10 @@
 import React from "react";
-import Board from "./Board";
+import Canvas from "./Canvas";
 
 export default function BallGame(){
     return (
         <div>
-            <Board />
+            <Canvas />
         </div>
     )
 }
