@@ -4,14 +4,15 @@ let position = vector.create(0, 0)
 let velocity = vector.create(0, 0)
 let currentLevel = 0
 
-export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
-    let { x, y, dx, dy, grav, bounce, friction, radius, lineWidth, color, borderColor, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
+export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
+    let { x, y, dx, dy, grav, bounce, friction, radius, lineWidth, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
     let height = canvas.height
     let width = canvas.width
     radius += lineWidth / 2
-
+    let cradius = circles.radius + circles.lineWidth / 2
     let gravity = vector.create(0, grav)
     let accel = vector.create(dx, dy)
+
 
     if (!(currentLevel === level)) {
         currentLevel = level
@@ -25,6 +26,14 @@ export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEV
     accel.addTo(gravity)
     velocity.addTo(accel)
     position.addTo(velocity)
+
+    let distance = Math.pow((position.getX() - circles.x), 2) + Math.pow((position.getY() - circles.y), 2)
+
+    if (distance < Math.pow(radius + cradius, 2)){
+        circles.color = "red"
+    } else{
+        circles.color = "black"
+    }
 
     if (!goingLeft && !goingRight) {
         player.dx = 0

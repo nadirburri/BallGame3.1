@@ -8,11 +8,6 @@ const defaultState = {
     player: {},
 }
 
-let mouse = {
-    x: 0,
-    y: 0
-}
-
 export default function Board() {
     const [level, setLevel] = useState(1)
     const [pause, setPause] = useState(false);
@@ -27,20 +22,28 @@ export default function Board() {
 
     const downHandler = ({ key }) => {
         if (key === 'ArrowRight') {
-            console.log("RIGHT")
             rightHeld = true
         }
         if (key === 'ArrowLeft') {
-            console.log("LEFT")
             leftHeld = true
         }
         if (key === 'ArrowUp') {
             upHeld = true
         }
-        if (key === 'l' || key === 'L') {
-            levelHandler()
+        if (key === 'l' || key === 'L'){
+           levelHandler()
         }
     }
+
+    const levelHandler = useCallback(() => {
+        if (level === maxLevel) {
+            setLevel(1)
+            console.log("level", 1)
+        } else {
+            setLevel(level + 1)
+            console.log("level", 2)
+        }
+    }, [level])
 
     function upHandler({ key }) {
         if (key === 'ArrowRight') {
@@ -53,16 +56,6 @@ export default function Board() {
             upHeld = false
         }
     }
-
-    const levelHandler = useCallback(() => {
-            if (level === maxLevel) {
-                setLevel(1)
-                console.log("level", 1)
-            } else {
-                setLevel(level + 1)
-                console.log("level", 2)
-            }
-        }, [level])
 
     useEffect(() => {
         window.addEventListener('keydown', downHandler);
@@ -77,8 +70,9 @@ export default function Board() {
     const contextRef = useRef(null)
     let newCanvas
     let circle
+    let canvas
     useEffect(() => {
-        const canvas = canvasRef.current
+        canvas = canvasRef.current
         let dpr = window.devicePixelRatio || 1
         let rect = canvas.getBoundingClientRect()
         canvas.width = rect.width * dpr
@@ -92,7 +86,11 @@ export default function Board() {
         state.player = newCanvas.getPlayer()
         circle = newCanvas.getCircle()
         return () => {
-
+            // CLEANUP (mos mi pastru vlerat pëlcet programi)
+            canvas = null
+            newCanvas = null
+            state.player = null
+            circle = null
         }
     }, [level])
 
@@ -110,7 +108,7 @@ export default function Board() {
             contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 
             DrawCircles(canvasRef.current, contextRef.current, circle, level)
-            PlayerPhysics(canvasRef.current, contextRef.current, state.player, level)
+            PlayerPhysics(canvasRef.current, contextRef.current, state.player, circle, level)
 
             dispatch({ type: "GO_LEFT", payload: leftHeld })
             dispatch({ type: "GO_RIGHT", payload: rightHeld })
@@ -120,7 +118,7 @@ export default function Board() {
         }
         render(lastFrameTime) // RIRENDEROHU MENIHER
         return () => {
-            cancelAnimationFrame(render)
+            
         }
     }, [level])
 
@@ -129,6 +127,6 @@ export default function Board() {
             id="canvas"
             ref={canvasRef}
             width={window.innerWidth}
-            height={window.innerHeight * 0.9} /> // * 0.925 PËR SHKAK TË NAVBARIT
+            height={window.innerHeight * 0.9} /> // * 0.9 PËR SHKAK TË NAVBARIT
     )
 }

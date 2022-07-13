@@ -30,6 +30,7 @@ export default data = {
 
             propData.cx = this.canvasXRatio(canvas, 75)
 		    propData.cy = this.canvasYRatio(canvas, 80)
+
 		    return propData;
         }
 	},
@@ -71,7 +72,7 @@ export default data = {
             x: this.cx,
             y: this.cy,
             radius: this.cradius,
-            lineWidth: this.lineWidth,
+            lineWidth: this.clineWidth,
             color: "black",
             borderColor: "white",
         })
