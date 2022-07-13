@@ -1,26 +1,36 @@
 let data = {}
 
 export default data = {
-    width: 0,
-    height: 0,
-
 	create: function(canvas, level) {
+        let propData = Object.create(this);
+
+        // PLAYER DATA (p)
+        propData.pgrav = this.canvasYRatio(canvas, 0.058)
+        propData.pspeed = this.canvasXRatio(canvas, 0.045)
+        propData.pjumpPower = this.canvasYRatio(canvas, 1.73)
+        propData.pradius = this.canvasYRatio(canvas, 3.46)
+        propData.plineWidth = this.canvasYRatio(canvas, 0.3)
+
+        // CIRCLE DATA (c)
+        propData.cradius = this.canvasYRatio(canvas, 3.46)
+        propData.clineWidth = this.canvasYRatio(canvas, 0.3)
+
         if (level === 1){
-            let p = Object.create(this);
-		    p.x = this.canvasXRatio(canvas, 50)
-		    p.y = this.canvasYRatio(canvas, 98)
-            p.grav = this.canvasYRatio(canvas, 0.058)
-            p.speed = this.canvasXRatio(canvas, 0.045)
-            p.jumpPower = this.canvasYRatio(canvas, 1.73)
-            p.radius = this.canvasYRatio(canvas, 3.46)
-            console.log(p.radius)
-		    return p;
+		    propData.px = this.canvasXRatio(canvas, 50)
+		    propData.py = this.canvasYRatio(canvas, 98)
+
+            propData.cx = this.canvasXRatio(canvas, 25)
+		    propData.cy = this.canvasYRatio(canvas, 80)
+
+		    return propData;
         }
 		if (level === 2){
-            let obj = Object.create(this);
-		    obj.setX(canvas.width/4);
-		    obj.setY(canvas.height/4);
-		    return obj;
+		    propData.px = this.canvasXRatio(canvas, 50)
+		    propData.py = this.canvasYRatio(canvas, 50)
+
+            propData.cx = this.canvasXRatio(canvas, 75)
+		    propData.cy = this.canvasYRatio(canvas, 80)
+		    return propData;
         }
 	},
 
@@ -32,26 +42,19 @@ export default data = {
         return canvas.height * (value/100)
     },
 
-	// setX: function(value) {
-	// 	this.x = value;
-	// },
-
-	// setY: function(value) {
-	// 	this.y = value;
-	// },
-
     getPlayer: function() {
         return({
-            x: this.x,
-            y: this.y,
+            x: this.px,
+            y: this.py,
             dx: 0,
             dy: 0,
-            grav: this.grav,
-            speed: this.speed,
-            jumpPower: this.jumpPower,
+            grav: this.pgrav,
+            speed: this.pspeed,
+            jumpPower: this.pjumpPower,
             bounce: -0.6,
-            friction: this.speed / 5,
-            radius: this.radius,
+            friction: this.pspeed / 5,
+            radius: this.pradius,
+            lineWidth: this.plineWidth,
             color: "",
             borderColor: "",
             onGround: false,
@@ -59,28 +62,19 @@ export default data = {
             goingLeft: false,
             jumping: false,
             jumpCooldown: 5,
-            bounces: 6,
+            bounces: 0,
         })
     },
-    // setPlayer: function({x, y, dx, dy, grav, speed, jumpPower, bounce, friction, radius, color, onGround, goingRight, goingLeft}) {
-    //         this.x = x
-    //         this.y = y
-    //         this.dx = dx
-    //         this.dy = dy
-    //         this.grav = grav
-    //         this.speed = speed
-    //         this.jumpPower = jumpPower
-    //         this.bounce = bounce
-    //         this.friction = friction
-    //         this.radius = radius
-    //         this.color = color
-    //         this.onGround = onGround
-    //         this.goingRight = goingRight
-    //         this.goingLeft = goingLeft
-    // },
-    circle: {
-        x: 750,
-        y: 600,
-        color: "black",
+
+    getCircle: function() {
+        return({
+            x: this.cx,
+            y: this.cy,
+            radius: this.cradius,
+            lineWidth: this.lineWidth,
+            color: "black",
+            borderColor: "white",
+        })
+        
     }
 }

@@ -1,50 +1,50 @@
-import vector from "./functionsAndData/vector"
-import data from "./functionsAndData/data"
+import vector from "../functionsAndData/vector"
 
 let position = vector.create(0, 0)
-
 let velocity = vector.create(0, 0)
-
-let currentLevel = 1
+let currentLevel = 0
 
 export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
-    let { x, y, dx, dy, grav, bounce, friction, radius, color, borderColor, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
+    let { x, y, dx, dy, grav, bounce, friction, radius, lineWidth, color, borderColor, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
     let height = canvas.height
     let width = canvas.width
-
-    if (currentLevel === level){
-        currentLevel++
-        position.setX(x)
-        position.setY(y)
-    }
+    radius += lineWidth / 2
 
     let gravity = vector.create(0, grav)
     let accel = vector.create(dx, dy)
+
+    if (!(currentLevel === level)) {
+        currentLevel = level
+        position = vector.create(0, 0)
+        velocity = vector.create(0, 0)
+        position.setX(x)
+        position.setY(y)
+    }
 
     // LËVIZJA E TOPIT
     accel.addTo(gravity)
     velocity.addTo(accel)
     position.addTo(velocity)
 
-    if (!goingLeft && !goingRight){
+    if (!goingLeft && !goingRight) {
         player.dx = 0
     }
 
-    if (velocity.getX() > 0){
-        if(onGround){
+    if (velocity.getX() > 0) {
+        if (onGround) {
             velocity.setX(velocity.getX() - friction)
         } else {
-            velocity.setX(velocity.getX() - friction*0.75)
+            velocity.setX(velocity.getX() - friction * 0.75)
         }
-    } else if (velocity.getX() < 0){
-        if(onGround){
+    } else if (velocity.getX() < 0) {
+        if (onGround) {
             velocity.setX(velocity.getX() + friction)
         } else {
-            velocity.setX(velocity.getX() + friction*0.75)
+            velocity.setX(velocity.getX() + friction * 0.75)
         }
     }
 
-    if(velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight){
+    if (velocity.getX() < friction && velocity.getX() > -friction && !goingLeft && !goingRight) {
         velocity.setX(0)
     }
 
@@ -66,29 +66,30 @@ export function PlayerPhysics(canvas, c, player, level) { // LOGJIKA E LËVIZJEV
         velocity.setX(velocity.getX() * bounce)
     }
 
-    if (bounces > jumpCooldown){
+    if (bounces > jumpCooldown) {
         player.color = "orange"
         player.borderColor = "rgb(241, 141, 54)"
-    } else{
+    } else {
         player.color = "rgb(122, 0, 0)"
         player.borderColor = "rgb(75, 0, 0)"
     }
 
-    let data = new Ball(position.getX(), position.getY(), radius, color, borderColor)
+    let data = new Ball(position.getX(), position.getY(), player.radius, player.lineWidth, player.color, player.borderColor)
     data.draw(c)
 }
 
 // VIZATOJE TOPIN PAS ÇDO RIRENDERIMI
-function Ball(x, y, radius, color, borderColor) {
+function Ball(x, y, radius, lineWidth, color, borderColor) {
     this.x = x
     this.y = y
     this.radius = radius
+    this.lineWidth = lineWidth
     this.color = color
     this.borderColor = borderColor
 
     this.draw = function (c) {
         c.beginPath();
-        c.lineWidth = 2.5;
+        c.lineWidth = lineWidth;
         c.strokeStyle = borderColor;
         c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         c.fillStyle = this.color;

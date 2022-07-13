@@ -1,4 +1,3 @@
-// keep in mind makign it so that you can't move mid air and friction only works on ground would be very cool game :D and make it change color to red or something when in air
 // double if statement seeing if two consectuive "jump" dispatch calls have the state.player.onGround property to true
 
 export const reducer = (state, action) => {
@@ -21,7 +20,7 @@ export const reducer = (state, action) => {
             return {player: newPlayer}
         }
     }
-    if (action.type === "RIGHT"){
+    if (action.type === "GO_RIGHT"){
         if (state.player.bounces > state.player.jumpCooldown && state.player.onGround && action.payload) {
             const newPlayer = state.player
             newPlayer.goingRight = true
@@ -33,7 +32,7 @@ export const reducer = (state, action) => {
             return {player: newPlayer}
         }
     }
-    if (action.type === "LEFT"){
+    if (action.type === "GO_LEFT"){
         if (state.player.bounces > state.player.jumpCooldown && state.player.onGround && action.payload) {
             const newPlayer = state.player
             newPlayer.goingLeft = true

@@ -4,13 +4,14 @@
 }
 
 body{
-  box-sizing: border-box;
+  background-color: rgba(253, 226, 189);
 }
 
 .navBar{
   padding: 0;
   margin: 0;
   height: 7vh;
+  background-color: white;
 }
 
 #canvas{
