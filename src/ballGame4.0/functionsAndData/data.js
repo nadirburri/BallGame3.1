@@ -73,8 +73,8 @@ export default data = {
             y: this.cy,
             radius: this.cradius,
             lineWidth: this.clineWidth,
-            color: "black",
-            borderColor: "white",
+            color: "rgb(111, 111, 226)",
+            borderColor: "darkblue",
         })
         
     }

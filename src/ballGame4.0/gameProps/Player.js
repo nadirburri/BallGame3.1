@@ -40,15 +40,17 @@ export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E 
         position.setX(position.getX() + Math.cos(angle) * distanceToMove)
         position.setY(position.getY() + Math.sin(angle) * distanceToMove)
 
-        let tangentVector = vector.create(-(circles.y - position.getY()), (circles.x - position.getX()))
-        tangentVector.setLength(1)
-        let length = vector.getDotProduct(velocity, tangentVector)
-        tangentVector.multiply(length)
-        let tangentVelocity = velocity.subtract(tangentVector)
-        velocity.setX(velocity.getX() + tangentVelocity.getX())
-        velocity.setY(velocity.getY() + tangentVelocity.getY())
-        velocity.setX(velocity.getX() * bounce)
-        velocity.setY(velocity.getY() * bounce)
+        // let tangentVector = vector.create(-(circles.y - position.getY()), (circles.x - position.getX()))
+        // tangentVector.setLength(1)
+        // let length = vector.getDotProduct(velocity, tangentVector)
+        // tangentVector.multiply(length)
+        // let tangentVelocity = velocity.subtract(tangentVector)
+        // velocity.setX(velocity.getX() + tangentVelocity.getX())
+        // velocity.setY(velocity.getY() + tangentVelocity.getY())
+        // velocity.setX(velocity.getX() * bounce)
+        // velocity.setY(velocity.getY() * bounce)
+
+        
         // circle2.Velocity.X += velocityComponentPerpendicularToTangent.X;
         // circle2.Velocity.Y += velocityComponentPerpendicularToTangent.Y;
         // tangentVector.Y = -( circle2.X - circle1.X );
