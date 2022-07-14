@@ -81,5 +81,15 @@ export default vector = {
 	divideBy: function(val) {
 		this._x /= val;
 		this._y /= val;
+	},
+
+	addLength: function(length) {
+		let angle = this.getAngle();
+		this._x += Math.cos(angle) * length;
+		this._y += Math.sin(angle) * length;
+	},
+
+	getDotProduct: function(v1, v2) {
+		return (v1.getX()*v2.getX() + v1.getY()*v2.getY())
 	}
 }

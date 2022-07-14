@@ -6,10 +6,13 @@ let currentLevel = 0
 
 export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E LËVIZJEVE TË TOPIT
     let { x, y, dx, dy, grav, bounce, friction, radius, lineWidth, onGround, goingRight, goingLeft, bounces, jumpCooldown } = player
+
     let height = canvas.height
     let width = canvas.width
+
     radius += lineWidth / 2
     let cradius = circles.radius + circles.lineWidth / 2
+
     let gravity = vector.create(0, grav)
     let accel = vector.create(dx, dy)
 
@@ -27,12 +30,29 @@ export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E 
     velocity.addTo(accel)
     position.addTo(velocity)
 
-    let distance = Math.pow((position.getX() - circles.x), 2) + Math.pow((position.getY() - circles.y), 2)
+    let distanceBetweenCircles = Math.pow((position.getX() - circles.x), 2) + Math.pow((position.getY() - circles.y), 2)
 
-    if (distance < Math.pow(radius + cradius, 2)){
-        circles.color = "red"
-    } else{
-        circles.color = "black"
+    if (distanceBetweenCircles < Math.pow(radius + cradius, 2)){
+        let distanceVector = vector.create((position.getX() - circles.x), (position.getY() - circles.y))
+        let distance = distanceVector.getLength()
+        let angle = distanceVector.getAngle()
+        let distanceToMove = radius + cradius - distance
+        position.setX(position.getX() + Math.cos(angle) * distanceToMove)
+        position.setY(position.getY() + Math.sin(angle) * distanceToMove)
+
+        let tangentVector = vector.create(-(circles.y - position.getY()), (circles.x - position.getX()))
+        tangentVector.setLength(1)
+        let length = vector.getDotProduct(velocity, tangentVector)
+        tangentVector.multiply(length)
+        let tangentVelocity = velocity.subtract(tangentVector)
+        velocity.setX(velocity.getX() + tangentVelocity.getX())
+        velocity.setY(velocity.getY() + tangentVelocity.getY())
+        velocity.setX(velocity.getX() * bounce)
+        velocity.setY(velocity.getY() * bounce)
+        // circle2.Velocity.X += velocityComponentPerpendicularToTangent.X;
+        // circle2.Velocity.Y += velocityComponentPerpendicularToTangent.Y;
+        // tangentVector.Y = -( circle2.X - circle1.X );
+        // tangentVector.X = circle2.Y - circle1.Y;
     }
 
     if (!goingLeft && !goingRight) {
