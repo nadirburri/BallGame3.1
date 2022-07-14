@@ -50,7 +50,7 @@ export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E 
         // velocity.setX(velocity.getX() * bounce)
         // velocity.setY(velocity.getY() * bounce)
 
-        
+
         // circle2.Velocity.X += velocityComponentPerpendicularToTangent.X;
         // circle2.Velocity.Y += velocityComponentPerpendicularToTangent.Y;
         // tangentVector.Y = -( circle2.X - circle1.X );
@@ -79,8 +79,8 @@ export function PlayerPhysics(canvas, c, player, circles, level) { // LOGJIKA E 
         velocity.setX(0)
     }
 
-    if (position.getY() + radius > height) {
-        position.setY(height - radius)
+    if (position.getY() + radius + 2.5 > height) {
+        position.setY(height - radius - 2.5)
         velocity.setY(velocity.getY() * bounce)
         player.onGround = true
     } else {

@@ -4,14 +4,21 @@
 }
 
 body{
-  background-color: rgba(253, 226, 189);
+  background-color: rgb(201, 170, 113); 
+}
+
+.home{
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
 }
 
 .navBar{
   padding: 0;
   margin: 0;
-  height: 7vh;
-  background-color: white;
+  height: 5vh;
+  background-color: rgb(201, 170, 113);
+  border-bottom: 3px solid rgb(241, 141, 54);
 }
 
 #canvas{

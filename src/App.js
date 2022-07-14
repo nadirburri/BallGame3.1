@@ -7,22 +7,13 @@ import {
   Link
 } from "react-router-dom";
 import Home from './Home';
+import Navbar from './Navbar'
 import BallGame from './ballGame4.0';
 
 
 function App() {
   return (
     <Router>
-      <div className="navBar">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/ballGame">BallGame</Link>
-          </li>
-        </ul>
-      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/ballGame" element={<BallGame />} />

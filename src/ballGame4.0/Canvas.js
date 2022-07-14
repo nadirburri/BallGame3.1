@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useReducer, useCallback } from "rea
 import { reducer } from "./Reducer";
 import { PlayerPhysics } from "./gameProps/Player";
 import { DrawCircles } from "./gameProps/DrawCircles";
+
+import Navbar from "../Navbar";
 import data from "./functionsAndData/data"
 
 const defaultState = {
@@ -20,6 +22,16 @@ export default function Board() {
     let leftHeld = false
     let upHeld = false
 
+    const levelHandler = useCallback((key) => {
+        if (level === maxLevel) {
+            setLevel(1)
+            console.log("level", 1)
+        } else {
+            setLevel(level + 1)
+            console.log("level", 2)
+        }
+    }, [level])
+
     const downHandler = ({ key }) => {
         if (key === 'ArrowRight') {
             rightHeld = true
@@ -31,19 +43,9 @@ export default function Board() {
             upHeld = true
         }
         if (key === 'l' || key === 'L'){
-           levelHandler()
+           levelHandler(key)
         }
     }
-
-    const levelHandler = useCallback(() => {
-        if (level === maxLevel) {
-            setLevel(1)
-            console.log("level", 1)
-        } else {
-            setLevel(level + 1)
-            console.log("level", 2)
-        }
-    }, [level])
 
     function upHandler({ key }) {
         if (key === 'ArrowRight') {
@@ -68,7 +70,7 @@ export default function Board() {
 
     const canvasRef = useRef(null)
     const contextRef = useRef(null)
-    let newCanvas
+    let newPropData
     let circle
     let canvas
     useEffect(() => {
@@ -82,13 +84,13 @@ export default function Board() {
         context.scale(dpr, dpr)
         contextRef.current = context
 
-        newCanvas = data.create(canvas, level)
-        state.player = newCanvas.getPlayer()
-        circle = newCanvas.getCircle()
+        newPropData = data.create(canvas, level)
+        state.player = newPropData.getPlayer()
+        circle = newPropData.getCircle()
         return () => {
             // CLEANUP (mos mi pastru vlerat pëlcet programi)
             canvas = null
-            newCanvas = null
+            newPropData = null
             state.player = null
             circle = null
         }
@@ -105,10 +107,20 @@ export default function Board() {
             }
             lastFrameTime = time
 
-            contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+            let canvas = canvasRef.current
+            let c = contextRef.current
 
-            DrawCircles(canvasRef.current, contextRef.current, circle, level)
-            PlayerPhysics(canvasRef.current, contextRef.current, state.player, circle, level)
+            c.clearRect(0, 0, canvas.width, canvas.height)
+            c.beginPath();
+            c.lineWidth = 5
+            c.strokeStyle = 'rgb(241, 141, 54)';
+            c.moveTo(0, canvas.height);
+            c.lineTo(canvas.width, canvas.height);
+            c.stroke();
+            c.closePath();
+
+            DrawCircles(canvas, c, circle, level)
+            PlayerPhysics(canvas, c, state.player, circle, level)
 
             dispatch({ type: "GO_LEFT", payload: leftHeld })
             dispatch({ type: "GO_RIGHT", payload: rightHeld })
@@ -123,10 +135,14 @@ export default function Board() {
     }, [level])
 
     return (
+        <>
+        <Navbar/>
         <canvas
             id="canvas"
             ref={canvasRef}
             width={window.innerWidth}
-            height={window.innerHeight * 0.9} /> // * 0.9 PËR SHKAK TË NAVBARIT
+            height={window.innerHeight * 0.875} />  {/* 0.875 PËR SHKAK TË NAVBARIT */}
+        <p>level {level}</p>
+        </>
     )
 }
